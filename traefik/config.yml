@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traefik
+  namespace: default
+  labels:
+    app: traefik
+data:
+  traefik.toml: |
+    # traefik.toml
+    logLevel = "DEBUG"
+    defaultEntryPoints = ["http", "https"]
+    [entryPoints]
+      [entryPoints.http]
+      address = ":80"
+      compress = true
+        [entryPoints.http.redirect]
+        entryPoint = "https"
+        permanent = true
+      [entryPoints.https]
+      address = ":443"
+      compress = true
+        [entryPoints.https.tls]
+          [entryPoints.https.tls.ClientCA]
+          files = ["/config/CA.crt"]
+          optional = false
+      [entryPoints.traefik]
+      address = ":8080"
+    [kubernetes]
+    [traefikLog]
+      format = "json"
+    [api]
+      entryPoint = "traefik"
+      dashboard = true
+  CA.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIEkTCCAvmgAwIBAgIQI+KjJSL4/5dLjECSbOTksTANBgkqhkiG9w0BAQsFADBh
+    MR4wHAYDVQQKExVta2NlcnQgZGV2ZWxvcG1lbnQgQ0ExGzAZBgNVBAsMEmRhdG9z
+    aEBNQlAtMi5sb2NhbDEiMCAGA1UEAwwZbWtjZXJ0IGRhdG9zaEBNQlAtMi5sb2Nh
+    bDAeFw0xOTAyMjMyMjEwNDBaFw0yOTAyMjMyMjEwNDBaMGExHjAcBgNVBAoTFW1r
+    Y2VydCBkZXZlbG9wbWVudCBDQTEbMBkGA1UECwwSZGF0b3NoQE1CUC0yLmxvY2Fs
+    MSIwIAYDVQQDDBlta2NlcnQgZGF0b3NoQE1CUC0yLmxvY2FsMIIBojANBgkqhkiG
+    9w0BAQEFAAOCAY8AMIIBigKCAYEAo3cax2s02hs9jYClMtH2WtzG+Nf5idHpOhWA
+    qS4M910yCSiwM+34TU9pdjXrL/rlPxGHM3bl3danBSP22M8/M+7bUV4hWAzbzVSE
+    u+Qq9xjiqdwGdIUi0VAg3irc8JWvEBIf+mG5beLho/HKL+eaYwA9nRK4gESUM7d6
+    qfclgdp51Xw0WrA1pbU6keN+srceMfYB9fZysAjh1q4uay16SgDPcRyLewAGwM84
+    TiOewGvSxt5BL4f49e65/ZW4WGJl20adm6m0MiNMlrB9zqB0uODmQVaHnKv1rlRQ
+    sBEZHUr8IPWZhLR7V3LEeQanzUmc78/Gx/c71s452RkVe0KkuffxAH03lDR+KZEF
+    s/rXy43++/HMcBwoeMfdbu8rL1SbuDqVjSxGdgGDZFWziVsXToTCRBDP1MXg4fBB
+    mUf5jSHrQPyThxu2b0akl5JcnqmqU9ylR2qtLHheY0u5CpNx0HAkP3VDJv9qpz+p
+    AupXoyhgtqv3wrTHUnN7wQ3cC8v7AgMBAAGjRTBDMA4GA1UdDwEB/wQEAwICBDAS
+    BgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBQqhn6iDdFkv/CIWa6R+7d8D3Eh
+    kTANBgkqhkiG9w0BAQsFAAOCAYEAAbPCdk/KgE+CzrsgAEqh1TiGfjnfXagBnwzA
+    zCjNxHis36vg3CTbxdXZGhSKLJplNTpK7iScRCo/XfTmvcRqGBZU/LeZpcVUCaId
+    ZEkeVMaDu3nz4CsNahq6zHIDvPmY1jFc2SRxYEdxj2XqfG/VXdakmBbfSytXw03G
+    gKgS4Eg+m2t4aa9sG9ilqlujOjwcivW9j36LcyDZS1X4Us7nFJ2eJjZcdiuj60LO
+    KfiE27GlDuSKyzX69zHnLHNQ7YwersS2uVSeP7gIv+DOWDorjrDCTwW4u9haQXrL
+    GB99Iq0KoRkuiGNBKo9I0joiegvaUcMp9sj4yObvvKHbiVC+XQPZzIFCHqA8kkD5
+    dpQdKIgje1zIQhxxr36peb2ymhjeVyUp6VwnsNMe18AVtRtsQoIVayubV+gXLaN0
+    La3w98o6bywumDO66FBVsuboNMGRO1obmyotVmlT7tTUYJP0Q1jfrWBEJ/HGNhok
+    ffaR+DKn9RtfILCaJnO74E/sbJ+a
+    -----END CERTIFICATE-----

@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: linkerd
+  namespace: linkerd
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    ingress.kubernetes.io/custom-request-headers:     l5d-dst-override:linkerd-web.linkerd.svc.cluster.local:8084
+    traefik.frontend.passHostHeader: "false"
+spec:
+  rules:
+  - host: linkerd.localhost
+    http:
+      paths:
+      - backend:
+          serviceName: linkerd-web
+          servicePort: 8084

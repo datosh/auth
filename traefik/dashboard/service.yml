@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-dashboard
+  namespace: default
+  labels:
+    app: traefik-dashboard
+spec:
+  selector:
+    app: traefik
+  ports:
+  - name: dashboard
+    targetPort: 8080
+    port: 8080

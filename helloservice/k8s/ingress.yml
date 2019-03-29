@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: helloservice
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: hello.localhost
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: helloservice
+          servicePort: http
+  tls:
+  - secretName: localhost-tls
+    hosts:
+      - hello.localhost
